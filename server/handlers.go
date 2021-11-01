@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"net/http"
 
-	service "github.com/IanPedroV/dad-jokes/services"
+	service "github.com/IanPedroV/dad-jokes/service"
 )
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
-	jokeId := service.GetJokeId()
-	fmt.Fprintf(w, "%s", service.GetDadJokeImage(jokeId))
+	joke := service.GetJoke()
+	fmt.Fprintf(w, "%s", service.GetDadJokeImage(joke.Id))
 }

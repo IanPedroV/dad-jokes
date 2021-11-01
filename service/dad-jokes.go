@@ -1,14 +1,19 @@
-package main
+package service
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
 )
 
-func GetJokeId() string {
+type Joke struct {
+	Id     string  `json:"id"`
+	Joke   string  `json:"joke"`
+	Status float64 `json:"status"`
+}
+
+func GetJoke() Joke {
 	client := http.Client{}
 	req, err := http.NewRequest("GET", "https://icanhazdadjoke.com/", nil)
 	if err != nil {
@@ -21,17 +26,13 @@ func GetJokeId() string {
 	if err != nil {
 		log.Fatal(err)
 	}
-	body, err := ioutil.ReadAll(resp.Body)
+	defer resp.Body.Close()
+	joke := Joke{}
+	err = json.NewDecoder(resp.Body).Decode(&joke)
 	if err != nil {
 		panic(err)
 	}
-	stringBody := string(body)
-	var data map[string]interface{}
-	err = json.Unmarshal([]byte(stringBody), &data)
-	if err != nil {
-		panic(err)
-	}
-	return fmt.Sprintf("%v", data["id"])
+	return joke
 }
 
 func GetDadJokeImage(jokeId string) string {
@@ -49,6 +50,7 @@ func GetDadJokeImage(jokeId string) string {
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		log.Fatal(err)

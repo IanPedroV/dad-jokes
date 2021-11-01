@@ -13,7 +13,7 @@ type Joke struct {
 	Status float64 `json:"status"`
 }
 
-func GetJoke() Joke {
+func Get() Joke {
 	client := http.Client{}
 	req, err := http.NewRequest("GET", "https://icanhazdadjoke.com/", nil)
 	if err != nil {
@@ -35,7 +35,7 @@ func GetJoke() Joke {
 	return joke
 }
 
-func GetDadJokeImage(jokeId string) []byte {
+func GetImage(jokeId string) []byte {
 	client := http.Client{}
 	req, err := http.NewRequest("GET", "https://icanhazdadjoke.com/j/"+jokeId+".png", nil)
 	if err != nil {

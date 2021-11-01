@@ -35,7 +35,7 @@ func GetJoke() Joke {
 	return joke
 }
 
-func GetDadJokeImage(jokeId string) string {
+func GetDadJokeImage(jokeId string) []byte {
 	client := http.Client{}
 	req, err := http.NewRequest("GET", "https://icanhazdadjoke.com/j/"+jokeId+".png", nil)
 	if err != nil {
@@ -55,5 +55,5 @@ func GetDadJokeImage(jokeId string) string {
 	if err != nil {
 		log.Fatal(err)
 	}
-	return string(body)
+	return body
 }
